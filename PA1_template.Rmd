@@ -1,7 +1,7 @@
 ---
-title: "PA1_template"
+title: "PA1_template_revised"
 author: "Sahar Gargary"
-date: "April 8, 2018"
+date: "April 22, 2018"
 output: html_document
 ---
 
@@ -15,7 +15,10 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r Loading and preprocessing the data}
 library(dplyr)
 library(readr)
-activity <- read_csv("C:/Users/Sahar/Desktop/Data_Sahar/Courses/5_Reproducible Research/W2_Markdown & knitr/HW/activity.csv")
+library(lattice)
+
+ setwd("C:/2018/Data_Sahar/Courses/5_Reproducible Research/W2_Markdown & knitr/HW")
+activity <- read_csv("activity.csv")
 activity <- as.data.frame(activity)
 
 ```
@@ -64,6 +67,16 @@ What is the impact of imputing missing data on the estimates of the total daily 
 ##Are there differences in activity patterns between weekdays and weekends?
 
 ```{r Are there differences in activity patterns between weekdays and weekends, fig.path = "/figs/"}
-activityweek <- activity %>%
+activitywd <- activityna %>%
+  mutate(weekdays = weekdays(activity$date)) %>%
+  mutate(wd = ifelse(weekdays %in% c("Saturday","Sunday"), "Weekend","Weekday"))
+ 
+stepwd <- activitywd %>%
+  group_by(interval,wd)  %>%
+  summarise(step = mean(as.numeric(steps),na.rm=TRUE)) 
+  
+ # plot(stepwd$interval,stepwd$step,  xlab = "Interval", ylab = "Number of steps", type = "l")
+ xyplot(step~interval|wd,stepwd,type='l', layout = c(1,2))
+ 
  
 ```

@@ -27,7 +27,7 @@ stepD<-activity %>%
   group_by(date)  %>%
   summarise(step = mean(as.numeric(steps),na.rm=TRUE))
 
-hist(stepD$step, col = "red")
+hist(stepD$step, col = "red", xlab = "steps", main = "Total Steps per Day")
 mean(stepD$step, na.rm = TRUE)
 median(stepD$step, na.rm = TRUE)
 
@@ -39,7 +39,7 @@ median(stepD$step, na.rm = TRUE)
 stepI<-activity %>%
   group_by(interval)  %>%
   summarise(step = mean(as.numeric(steps),na.rm=TRUE))
-plot(stepI$interval,stepI$step,  xlab = "5-minute interval", ylab = "steps taken", type = "l")
+plot(stepI$interval,stepI$step,  xlab = "5-minute interval", ylab = "steps taken", type = "l", main = "Average Number of Steps per Day by Interval")
 
 stepI$interval[which.max(stepI$step)]
 
@@ -51,7 +51,7 @@ length(which(is.na (activity$steps)))
 activityna<-activity %>%
   mutate(steps = ifelse(is.na(steps), mean(activity$steps[activity$interval == interval],na.rm=TRUE), steps ))
 
-hist(activityna$steps, col = "red")
+hist(activityna$steps, col = "red", xlab =  "steps", main = "Imputing missing values")
 mean(activityna$steps, na.rm = TRUE)
 median(activityna$steps, na.rm = TRUE)
 
